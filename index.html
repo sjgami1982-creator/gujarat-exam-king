@@ -3,23 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ગુજરાત જનરલ નોલેજ ક્વિઝ</title>
+    <title>ગુજરાત ક્વિઝ</title>
     <style>
         * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #ffffff; margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center; }
-        .quiz-container { background: white; width: 100%; max-width: 550px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
-        h2 { text-align: center; color: #333; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 15px; font-size: 22px; }
-        .timer-box { background: #ffeaa7; color: #d63031; font-weight: bold; padding: 8px 15px; border-radius: 20px; font-size: 16px; display: inline-block; margin-bottom: 15px; border: 1px solid #fab1a0; }
-        #question_num { font-size: 14px; color: #666; font-weight: 600; text-align: left; margin-bottom: 5px; }
-        #question { font-size: 18px; font-weight: bold; color: #2c3e50; text-align: left; margin-bottom: 20px; line-height: 1.5; }
-        .options-container { display: flex; flex-direction: column; gap: 12px; }
-        .option-btn { width: 100%; padding: 14px 20px; font-size: 16px; font-weight: 500; cursor: pointer; border: 2px solid #e0e0e0; border-radius: 8px; background: #fdfdfd; text-align: left; transition: all 0.2s ease; color: #333; }
-        .option-btn:hover:not([disabled]) { background: #f0f4f8; border-color: #3498db; }
-        .option-btn.correct { background-color: #2ecc71 !important; border-color: #27ae60 !important; color: white !important; font-weight: bold; }
-        .option-btn.wrong { background-color: #e74c3c !important; border-color: #c0392b !important; color: white !important; }
-        #result-box { text-align: center; padding: 20px 0; }
-        .score-text { font-size: 22px; color: #2c3e50; margin-bottom: 20px; }
-        .restart-btn { background: #3498db; color: white; border: none; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 25px; cursor: pointer; }
+        body { font-family: sans-serif; background: #ffffff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .quiz-container { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; text-align: center; }
+        .timer-box { background: #ffeaa7; color: #d63031; font-weight: bold; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 15px; }
+        #question { font-size: 18px; font-weight: bold; margin-bottom: 20px; text-align: left; }
+        .option-btn { width: 100%; padding: 12px; margin: 6px 0; font-size: 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; text-align: left; }
+        .option-btn:hover { background: #f0f0f0; }
+        .correct { background-color: #2ecc71 !important; color: white; font-weight: bold; }
+        .wrong { background-color: #e74c3c !important; color: white; }
     </style>
 </head>
 <body>
@@ -27,24 +21,22 @@
 <div class="quiz-container">
     <h2>ગુજરાત જનરલ નોલેજ ક્વિઝ</h2>
     <div id="quiz-box">
-        <div style="text-align: right;">
-            <div class="timer-box">⏱️ સમય બાકી: <span id="time-left">20</span> સેકન્ડ</div>
-        </div>
-        <p id="question_num">પ્રશ્ન: 1 / 10</p>
-        <p id="question">લોડ થઈ રહ્યું છે...</p>
-        <div id="options" class="options-container"></div>
+        <div class="timer-box">⏱️ સમય: <span id="time-left">20</span> સેકન્ડ</div>
+        <p id="question_num" style="text-align:left; color:#666;">પ્રશ્ન: 1 / 10</p>
+        <p id="question">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
+        <div id="options"></div>
     </div>
     <div id="result-box" style="display: none;">
-        <h3 style="font-size: 24px; margin-bottom: 10px;">🎉 ક્વિઝ પૂરી થઈ ગઈ!</h3>
-        <p class="score-text" id="score-display">તમારો સ્કોર: 0 / 10</p>
-        <button class="restart-btn" onclick="restartQuiz()">ફરીથી શરૂ કરો</button>
+        <h3>🎉 ક્વિઝ પૂરી થઈ ગઈ!</h3>
+        <p id="score-display" style="font-size:20px;"></p>
+        <button onclick="location.reload()" style="padding:10px 20px; font-size:16px; cursor:pointer;">ફરીથી શરૂ કરો</button>
     </div>
 </div>
 
 <script>
     const quizData = [
         { question: "૧. ગુજરાતની સૌથી લાંબી નદી કઈ છે?", options: ["તાપી", "નર્મદા", "મહી", "સાબરમતી"], correct: 1 },
-        { question: "૨. સાબરમતી આશ્રમની સ્ถาપના કયા વર્ષમાં થઈ હતી?", options: ["૧૯૧૫", "૧૯૧૭", "૧૯૨૦", "૧૯૩૦"], correct: 1 },
+        { question: "૨. સાબરમતી આશ્રમની સ્થાપના કયા વર્ષમાં થઈ હતી?", options: ["૧૯૧૫", "૧૯૧૭", "૧૯૨૦", "૧૯૩૦"], correct: 1 },
         { question: "૩. ગુજરાતનું સૌથી મોટું બંદર કયું છે?", options: ["ભાવનગર", "પોરબંદર", "કંડલા", "વેરાવળ"], correct: 2 },
         { question: "૪. સ્ટેચ્યુ ઓફ યુનિટીની ઊંચાઈ કેટલી છે?", options: ["૧૫૨ મીટર", "૧૮૨ મીટર", "૨૦૨ મીટર", "૧૭૨ મીટર"], correct: 1 },
         { question: "૫. ગુજરાતનું રાજ્ય પક્ષી કયું છે?", options: ["મોર", "પોપટ", "ફ્લેમિંગો (સુરખાબ)", "કબૂતર"], correct: 2 },
@@ -57,24 +49,17 @@
 
     let currentQuestion = 0;
     let score = 0;
-    let timer; 
+    let timer;
     let timeLeft = 20;
 
-    function startTimer() {
-        timeLeft = 20;
-        document.getElementById("time-left").innerText = timeLeft;
-        clearInterval(timer);
-        timer = setInterval(() => {
-            timeLeft--;
-            document.getElementById("time-left").innerText = timeLeft;
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                timeOutAction();
-            }
-        }, 1000);
-    }
-
     function loadQuiz() {
+        if (currentQuestion >= quizData.length) {
+            document.getElementById("quiz-box").style.display = "none";
+            document.getElementById("result-box").style.display = "block";
+            document.getElementById("score-display").innerHTML = "તમારો સ્કોર: <b>" + score + " / " + quizData.length + "</b>";
+            return;
+        }
+
         const currentQuiz = quizData[currentQuestion];
         document.getElementById("question_num").innerText = "પ્રશ્ન: " + (currentQuestion + 1) + " / " + quizData.length;
         document.getElementById("question").innerText = currentQuiz.question;
@@ -90,7 +75,18 @@
             optionsContainer.appendChild(btn);
         });
 
-        startTimer();
+        timeLeft = 20;
+        document.getElementById("time-left").innerText = timeLeft;
+        clearInterval(timer);
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById("time-left").innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                currentQuestion++;
+                loadQuiz();
+            }
+        }, 1000);
     }
 
     function checkAnswer(selectedBtn, selectedIndex) {
@@ -106,36 +102,9 @@
             selectedBtn.classList.add("wrong");
             allButtons[currentQuiz.correct].classList.add("correct");
         }
-        goToNextQuestion();
-    }
 
-    function timeOutAction() {
-        const currentQuiz = quizData[currentQuestion];
-        const allButtons = document.querySelectorAll(".option-btn");
-        allButtons.forEach(btn => btn.disabled = true);
-        allButtons[currentQuiz.correct].classList.add("correct");
-        goToNextQuestion();
-    }
-
-    function goToNextQuestion() {
         currentQuestion++;
-        setTimeout(() => {
-            if (currentQuestion < quizData.length) {
-                loadQuiz();
-            } else {
-                document.getElementById("quiz-box").style.display = "none";
-                document.getElementById("result-box").style.display = "block";
-                document.getElementById("score-display").innerHTML = "તમારો ફાઇનલ સ્કોર: <strong>" + score + " / " + quizData.length + "</strong>";
-            }
-        }, 1200);
-    }
-
-    function restartQuiz() {
-        currentQuestion = 0;
-        score = 0;
-        document.getElementById("quiz-box").style.display = "block";
-        document.getElementById("result-box").style.display = "none";
-        loadQuiz();
+        setTimeout(loadQuiz, 1200);
     }
 
     loadQuiz();
