@@ -5,77 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ગુજરાત એક્ઝામ કિંગ ક્વિઝ</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; text-align: center; }
-        .quiz-container { background: white; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        button { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 5px; background: #e7e7e7; text-align: left; padding-left: 20px; }
-        button:hover { background: #ddd; }
-        #result { margin-top: 20px; font-weight: bold; font-size: 18px; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #71b7e6, #9b59b6); min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; padding: 20px; }
+        .quiz-container { background: white; width: 100%; max-width: 550px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        h2 { text-align: center; color: #333; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        #question_num { font-size: 14px; color: #666; font-weight: 600; text-align: left; margin-bottom: 5px; }
+        #question { font-size: 19px; font-weight: bold; color: #2c3e50; text-align: left; margin-bottom: 20px; line-height: 1.5; }
+        .options-container { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn { width: 100%; padding: 14px 20px; font-size: 16px; font-weight: 500; cursor: pointer; border: 2px solid #e0e0e0; border-radius: 8px; background: #fdfdfd; text-align: left; transition: all 0.2s ease; color: #333; }
+        .option-btn:hover:not([disabled]) { background: #f0f4f8; border-color: #3498db; transform: translateY(-2px); }
+        .option-btn.correct { background-color: #2ecc71 !important; border-color: #27ae60 !important; color: white !important; font-weight: bold; }
+        .option-btn.wrong { background-color: #e74c3c !important; border-color: #c0392b !important; color: white !important; }
+        #result-box { text-align: center; padding: 20px 0; }
+        .score-text { font-size: 22px; color: #2c3e50; margin-bottom: 20px; }
+        .restart-btn { background: #3498db; color: white; border: none; padding: 12px 30px; font-size: 16px; font-weight: bold; border-radius: 25px; cursor: pointer; transition: background 0.2s; }
+        .restart-btn:hover { background: #2980b9; }
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
     <h2>ગુજરાત જનરલ નોલેજ ક્વિઝ</h2>
-    <div id="quiz">
-        <p id="question_num" style="font-weight: bold; color: #555;"></p>
-        <p id="question" style="font-size: 18px; font-weight: bold;">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
-        <div id="options"></div>
+    <div id="quiz-box">
+        <p id="question_num">પ્રશ્ન: 1 / 10</p>
+        <p id="question">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
+        <div id="options" class="options-container"></div>
     </div>
-    <div id="result"></div>
+    <div id="result-box" style="display: none;">
+        <h3 style="font-size: 26px; margin-bottom: 10px;">🎉 ક્વિઝ પૂરી થઈ ગઈ!</h3>
+        <p class="score-text" id="score-display">તમારો સ્કોર: 0 / 10</p>
+        <button class="restart-btn" onclick="restartQuiz()">ફરીથી શરૂ કરો</button>
+    </div>
 </div>
 
 <script>
-    // અહીં કુલ ૧૦ પ્રશ્નો ઉમેરેલા છે. તમે સાચા જવાબનો નંબર (correct) 0, 1, 2, 3 મુજબ સેટ કરી શકો છો.
     const quizData = [
         {
             question: "૧. ગુજરાતની સૌથી લાંબી નદી કઈ છે?",
             options: ["તાપી", "નર્મદા", "મહી", "સાબરમતી"],
-            correct: 1 // નર્મદા
+            correct: 1
         },
         {
             question: "૨. સાબરમતી આશ્રમની સ્થાપના કયા વર્ષમાં થઈ હતી?",
             options: ["૧૯૧૫", "૧૯૧૭", "૧૯૨૦", "૧૯૩૦"],
-            correct: 1 // ૧૯૧૭
+            correct: 1
         },
         {
             question: "૩. ગુજરાતનું સૌથી મોટું બંદર કયું છે?",
-            options: ["ભાવનગર", "પોરબંદર", "કંડલા", "વેરાવળ"],
-            correct: 2 // કંડલા
+            options: ["ભાવનગર", "પોરબંદર", "કંડલા", "веરાવળ"],
+            correct: 2
         },
         {
             question: "૪. સ્ટેચ્યુ ઓફ યુનિટીની ઊંચાઈ કેટલી છે?",
             options: ["૧૫૨ મીટર", "૧૮૨ મીટર", "૨0૨ મીટર", "૧૭૨ મીટર"],
-            correct: 1 // ૧૮૨ મીટર
+            correct: 1
         },
         {
             question: "૫. ગુજરાતનું રાજ્ય પક્ષી કયું છે?",
             options: ["મોર", "પોપટ", "ફ્લેમિંગો (સુરખાબ)", "કબૂતર"],
-            correct: 2 // ફ્લેમિંગો
+            correct: 2
         },
         {
             question: "૬. ગિરા ધોધ કયા જિલ્લામાં આવેલો છે?",
             options: ["ડાંગ", "વલસાડ", "નવસારી", "તાપી"],
-            correct: 0 // ડાંગ
+            correct: 0
         },
         {
             question: "૭. કીર્તિ તોરણ કયા શહેરમાં આવેલું છે?",
             options: ["પાટણ", "વડનગર", "જૂનાગઢ", "મોઢેરા"],
-            correct: 1 // વડનગર
+            correct: 1
         },
         {
             question: "૮. અક્ષરધામ મંદિર કયા શહેરમાં આવેલું છે?",
             options: ["અમદાવાદ", "રાજકોટ", "ગાંધીનગર", "સુરત"],
-            correct: 2 // ગાંધીનગર
+            correct: 2
         },
         {
             question: "૯. ગુજરાતમાં સૂર્યમંદિર ક્યાં આવેલું છે?",
             options: ["મોઢેરા", "અંબાજી", "સોમનાથ", "દ્વારકા"],
-            correct: 0 // મોઢેરા
+            correct: 0
         },
         {
             question: "૧૦. ગીર રાષ્ટ્રીય ઉદ્યાન કયા પ્રાણી માટે પ્રખ્યાત છે?",
             options: ["વાઘ", "સિંહ", "દીપડો", "કાળિયાર"],
-            correct: 1 // સિંહ
+            correct: 1
         }
     ];
 
@@ -92,25 +105,49 @@
 
         currentQuiz.options.forEach((option, index) => {
             const btn = document.createElement("button");
+            btn.classList.add("option-btn");
             btn.innerText = option;
-            btn.onclick = () => checkAnswer(index);
+            btn.onclick = () => checkAnswer(btn, index);
             optionsContainer.appendChild(btn);
         });
     }
 
-    function checkAnswer(selectedIndex) {
-        if (selectedIndex === quizData[currentQuestion].correct) {
+    function checkAnswer(selectedBtn, selectedIndex) {
+        const currentQuiz = quizData[currentQuestion];
+        const allButtons = document.querySelectorAll(".option-btn");
+        
+        // બધા બટન ડિસેબલ કરો જેથી બીજી વાર ક્લિક ન થાય
+        allButtons.forEach(btn => btn.disabled = true);
+
+        if (selectedIndex === currentQuiz.correct) {
+            selectedBtn.classList.add("correct");
             score++;
+        } else {
+            selectedBtn.classList.add("wrong");
+            // સાચો જવાબ કયો હતો તે લીલા રંગથી બતાવો
+            allButtons[currentQuiz.correct].classList.add("correct");
         }
         
         currentQuestion++;
 
-        if (currentQuestion < quizData.length) {
-            loadQuiz();
-        } else {
-            document.getElementById("quiz").innerHTML = "<h3>🎉 ક્વિઝ પૂરી થઈ ગઈ!</h3>";
-            document.getElementById("result").innerHTML = `તમારો ફાઇનલ સ્કોર: <strong>${score} / ${quizData.length}</strong>`;
-        }
+        // ૧ સેકન્ડ પછી આગલો પ્રશ્ન લોડ કરો જેથી યુઝર રંગ જોઈ શકે
+        setTimeout(() => {
+            if (currentQuestion < quizData.length) {
+                loadQuiz();
+            } else {
+                document.getElementById("quiz-box").style.display = "none";
+                document.getElementById("result-box").style.display = "block";
+                document.getElementById("score-display").innerHTML = `તમારો ફાઇનલ સ્કોર: <strong>${score} / ${quizData.length}</strong>`;
+            }
+        }, 1200);
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        document.getElementById("quiz-box").style.display = "block";
+        document.getElementById("result-box").style.display = "none";
+        loadQuiz();
     }
 
     loadQuiz();
