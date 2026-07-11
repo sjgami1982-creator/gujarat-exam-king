@@ -7,8 +7,12 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #71b7e6, #9b59b6); min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; padding: 20px; }
-        .quiz-container { background: white; width: 100%; max-width: 550px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .quiz-container { background: white; width: 100%; max-width: 550px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; }
         h2 { text-align: center; color: #333; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        
+        /* ટાઇમરની ડિઝાઇન */
+        .timer-box { background: #ffeaa7; color: #d63031; font-weight: bold; padding: 8px 15px; border-radius: 20px; font-size: 16px; display: inline-block; margin-bottom: 15px; border: 1px solid #fab1a0; }
+        
         #question_num { font-size: 14px; color: #666; font-weight: 600; text-align: left; margin-bottom: 5px; }
         #question { font-size: 19px; font-weight: bold; color: #2c3e50; text-align: left; margin-bottom: 20px; line-height: 1.5; }
         .options-container { display: flex; flex-direction: column; gap: 12px; }
@@ -26,11 +30,18 @@
 
 <div class="quiz-container">
     <h2>ગુજરાત જનરલ નોલેજ ક્વિઝ</h2>
+    
     <div id="quiz-box">
+        <!-- ટાઇમર ડિસ્પ્લે -->
+        <div style="text-align: right;">
+            <div class="timer-box">⏱️ સમય બાકી: <span id="time-left">૨૦</span> સેકન્ડ</div>
+        </div>
+        
         <p id="question_num">પ્રશ્ન: 1 / 10</p>
         <p id="question">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
         <div id="options" class="options-container"></div>
     </div>
+    
     <div id="result-box" style="display: none;">
         <h3 style="font-size: 26px; margin-bottom: 10px;">🎉 ક્વિઝ પૂરી થઈ ગઈ!</h3>
         <p class="score-text" id="score-display">તમારો સ્કોર: 0 / 10</p>
@@ -40,60 +51,40 @@
 
 <script>
     const quizData = [
-        {
-            question: "૧. ગુજરાતની સૌથી લાંબી નદી કઈ છે?",
-            options: ["તાપી", "નર્મદા", "મહી", "સાબરમતી"],
-            correct: 1
-        },
-        {
-            question: "૨. સાબરમતી આશ્રમની સ્થાપના કયા વર્ષમાં થઈ હતી?",
-            options: ["૧૯૧૫", "૧૯૧૭", "૧૯૨૦", "૧૯૩૦"],
-            correct: 1
-        },
-        {
-            question: "૩. ગુજરાતનું સૌથી મોટું બંદર કયું છે?",
-            options: ["ભાવનગર", "પોરબંદર", "કંડલા", "веરાવળ"],
-            correct: 2
-        },
-        {
-            question: "૪. સ્ટેચ્યુ ઓફ યુનિટીની ઊંચાઈ કેટલી છે?",
-            options: ["૧૫૨ મીટર", "૧૮૨ મીટર", "૨0૨ મીટર", "૧૭૨ મીટર"],
-            correct: 1
-        },
-        {
-            question: "૫. ગુજરાતનું રાજ્ય પક્ષી કયું છે?",
-            options: ["મોર", "પોપટ", "ફ્લેમિંગો (સુરખાબ)", "કબૂતર"],
-            correct: 2
-        },
-        {
-            question: "૬. ગિરા ધોધ કયા જિલ્લામાં આવેલો છે?",
-            options: ["ડાંગ", "વલસાડ", "નવસારી", "તાપી"],
-            correct: 0
-        },
-        {
-            question: "૭. કીર્તિ તોરણ કયા શહેરમાં આવેલું છે?",
-            options: ["પાટણ", "વડનગર", "જૂનાગઢ", "મોઢેરા"],
-            correct: 1
-        },
-        {
-            question: "૮. અક્ષરધામ મંદિર કયા શહેરમાં આવેલું છે?",
-            options: ["અમદાવાદ", "રાજકોટ", "ગાંધીનગર", "સુરત"],
-            correct: 2
-        },
-        {
-            question: "૯. ગુજરાતમાં સૂર્યમંદિર ક્યાં આવેલું છે?",
-            options: ["મોઢેરા", "અંબાજી", "સોમનાથ", "દ્વારકા"],
-            correct: 0
-        },
-        {
-            question: "૧૦. ગીર રાષ્ટ્રીય ઉદ્યાન કયા પ્રાણી માટે પ્રખ્યાત છે?",
-            options: ["વાઘ", "સિંહ", "દીપડો", "કાળિયાર"],
-            correct: 1
-        }
+        { question: "૧. ગુજરાતની સૌથી લાંબી નદી કઈ છે?", options: ["તાપી", "નર્મદા", "મહી", "સાબરમતી"], correct: 1 },
+        { question: "૨. સાબરમતી આશ્રમની સ્થાપના કયા વર્ષમાં થઈ હતી?", options: ["૧૯૧૫", "૧૯૧运行", "૧૯૨૦", "૧૯૩૦"], correct: 1 },
+        { question: "૩. ગુજરાતનું સૌથી મોટું બંદર કયું છે?", options: ["ભાવનગર", "પોરબંદર", "કંડલા", "વેરાવળ"], correct: 2 },
+        { question: "૪. સ્ટેચ્યુ ઓફ યુનિટીની ઊંચાઈ કેટલી છે?", options: ["૧૫૨ મીટર", "૧૮૨ મીટર", "૨0૨ મીટર", "૧૭૨ મીટર"], correct: 1 },
+        { question: "૫. ગુજરાતનું રાજ્ય પક્ષી કયું છે?", options: ["મોર", "પોપટ", "ફ્લેમિંગો (સુરખાબ)", "કબૂતર"], correct: 2 },
+        { question: "૬. ગિરા ધોધ કયા જિલ્લામાં આવેલો છે?", options: ["ડાંગ", "વલસાડ", "નવસારી", "તાપી"], correct: 0 },
+        { question: "૭. કીર્તિ તોરણ કયા શહેરમાં આવેલું છે?", options: ["પાટણ", "વડનગર", "જૂનાગઢ", "મોઢેરા"], correct: 1 },
+        { question: "૮. અક્ષરધામ મંદિર કયા શહેરમાં આવેલું છે?", options: ["અમદાવાદ", "રાજકોટ", "ગાંધીનગર", "સુરત"], correct: 2 },
+        { question: "૯. ગુજરાતમાં સૂર્યમંદિર ક્યાં આવેલું છે?", options: ["મોઢેરા", "અંબાજી", "સોમનાથ", "દ્વારકા"], correct: 0 },
+        { question: "૧૦. ગીર રાષ્ટ્રીય ઉદ્યાન કયા પ્રાણી માટે પ્રખ્યાત છે?", options: ["વાઘ", "સિંહ", "દીપડો", "કાળિયાર"], correct: 1 }
     ];
 
     let currentQuestion = 0;
     let score = 0;
+    let timer; 
+    let timeLeft = 20; // દરેક પ્રશ્ન માટે ૨૦ સેકન્ડ
+
+    function startTimer() {
+        timeLeft = 20;
+        document.getElementById("time-left").innerText = timeLeft;
+        
+        // જૂનું ટાઇમર ક્લિયર કરવું
+        clearInterval(timer);
+        
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById("time-left").innerText = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timeOutAction(); // સમય પૂરો થાય ત્યારે આ ફંક્શન રન થશે
+            }
+        }, 1000);
+    }
 
     function loadQuiz() {
         const currentQuiz = quizData[currentQuestion];
@@ -110,13 +101,15 @@
             btn.onclick = () => checkAnswer(btn, index);
             optionsContainer.appendChild(btn);
         });
+
+        startTimer(); // પ્રશ્ન લોડ થતાં જ ટાઇમર શરૂ કરો
     }
 
     function checkAnswer(selectedBtn, selectedIndex) {
+        clearInterval(timer); // ક્લિક કરતાં જ ટાઇમર અટકાવો
         const currentQuiz = quizData[currentQuestion];
         const allButtons = document.querySelectorAll(".option-btn");
         
-        // બધા બટન ડિસેબલ કરો જેથી બીજી વાર ક્લિક ન થાય
         allButtons.forEach(btn => btn.disabled = true);
 
         if (selectedIndex === currentQuiz.correct) {
@@ -124,13 +117,26 @@
             score++;
         } else {
             selectedBtn.classList.add("wrong");
-            // સાચો જવાબ કયો હતો તે લીલા રંગથી બતાવો
             allButtons[currentQuiz.correct].classList.add("correct");
         }
         
-        currentQuestion++;
+        goToNextQuestion();
+    }
 
-        // ૧ સેકન્ડ પછી આગલો પ્રશ્ન લોડ કરો જેથી યુઝર રંગ જોઈ શકે
+    // જો સમય પૂરો થઈ જાય તો ઓટોમેટિક સાચો જવાબ બતાવો
+    function timeOutAction() {
+        const currentQuiz = quizData[currentQuestion];
+        const allButtons = document.querySelectorAll(".option-btn");
+        
+        allButtons.forEach(btn => btn.disabled = true);
+        // યુઝરે જવાબ નથી આપ્યો એટલે ફક્ત સાચો જવાબ લીલા રંગથી હાઇલાઇટ થશે
+        allButtons[currentQuiz.correct].classList.add("correct");
+        
+        goToNextQuestion();
+    }
+
+    function goToNextQuestion() {
+        currentQuestion++;
         setTimeout(() => {
             if (currentQuestion < quizData.length) {
                 loadQuiz();
