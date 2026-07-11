@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>મારી ઓનલાઇન ક્વિઝ</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; text-align: center; }
+        .quiz-container { background: white; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        button { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 5px; background: #e7e7e7; }
+        button:hover { background: #ddd; }
+        #result { margin-top: 20px; font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h2>સામાન્ય જ્ઞાન ક્વિઝ</h2>
+    <div id="quiz">
+        <p id="question">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
+        <div id="options"></div>
+    </div>
+    <div id="result"></div>
+</div>
+
+<script>
+    // ૧. પ્રશ્નોની યાદી (અહીં તમે નવા પ્રશ્નો ઉમેરી શકો છો)
+    const quizData = [
+        {
+            question: "ગુજરાતનું પાટનગર કયું છે?",
+            options: ["અમદાવાદ", "સુરત", "ગાંધીનગર", "રાજકોટ"],
+            correct: 2 // ૨ એટલે કે 'ગાંધીનગર' (ગણતરી 0 થી શરૂ થાય: 0=અમદાવાદ, 1=સુરત, 2=ગાંધીનગર...)
+        },
+        {
+            question: "કયો ગ્રહ 'લાલ ગ્રહ' તરીકે ઓળખાય છે?",
+            options: ["બુધ", "મંગળ", "શુક્ર", "શનિ"],
+            correct: 1 // 1 એટલે કે 'મંગળ'
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuiz() {
+        const currentQuiz = quizData[currentQuestion];
+        document.getElementById("question").innerText = currentQuiz.question;
+        
+        const optionsContainer = document.getElementById("options");
+        optionsContainer.innerHTML = ""; // જૂના ઓપ્શન સાફ કરવા
+
+        currentQuiz.options.forEach((option, index) => {
+            const btn = document.createElement("button");
+            btn.innerText = option;
+            btn.onclick = () => checkAnswer(index);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIndex) {
+        if (selectedIndex === quizData[currentQuestion].correct) {
+            score++;
+        }
+        
+        currentQuestion++;
+
+        if (currentQuestion < quizData.length) {
+            loadQuiz();
+        } else {
+            document.getElementById("quiz").innerHTML = "<h3>ક્વિઝ પૂરી થઈ ગઈ!</h3>";
+            document.getElementById("result").innerText = `તમારો સ્કોર: ${score} / ${quizData.length}`;
+        }
+    }
+
+    // ક્વિઝ શરૂ કરો
+    loadQuiz();
+</script>
+
+</body>
+</html>
