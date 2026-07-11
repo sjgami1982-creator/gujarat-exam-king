@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ગુજરાત ક્વિઝ</title>
+    <title>ગુજરાત જનરલ નોલેજ ક્વિઝ</title>
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: sans-serif; background: #ffffff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .quiz-container { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; text-align: center; }
-        .timer-box { background: #ffeaa7; color: #d63031; font-weight: bold; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-bottom: 15px; }
-        #question { font-size: 18px; font-weight: bold; margin-bottom: 20px; text-align: left; }
-        .option-btn { width: 100%; padding: 12px; margin: 6px 0; font-size: 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9; text-align: left; }
-        .option-btn:hover { background: #f0f0f0; }
-        .correct { background-color: #2ecc71 !important; color: white; font-weight: bold; }
-        .wrong { background-color: #e74c3c !important; color: white; }
+        * { box-sizing: border-box; font-family: sans-serif; }
+        body { background: #f4f7f6; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .quiz-container { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+        h2 { text-align: center; color: #333; margin-top: 0; padding-bottom: 10px; border-bottom: 2px solid #eee; }
+        .timer-box { background: #ffeaa7; color: #d63031; font-weight: bold; padding: 6px 15px; border-radius: 20px; display: inline-block; float: right; }
+        #question { font-size: 18px; font-weight: bold; margin-top: 40px; margin-bottom: 20px; text-align: left; color: #2c3e50; clear: both; }
+        .option-btn { width: 100%; padding: 13px; margin: 8px 0; font-size: 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 6px; background: #fff; text-align: left; transition: 0.2s; }
+        .option-btn:hover { background: #f0f4f8; border-color: #3498db; }
+        .correct { background-color: #2ecc71 !important; color: white !important; font-weight: bold; border-color: #27ae60 !important; }
+        .wrong { background-color: #e74c3c !important; color: white !important; border-color: #c0392b !important; }
     </style>
 </head>
 <body>
@@ -22,14 +23,14 @@
     <h2>ગુજરાત જનરલ નોલેજ ક્વિઝ</h2>
     <div id="quiz-box">
         <div class="timer-box">⏱️ સમય: <span id="time-left">20</span> સેકન્ડ</div>
-        <p id="question_num" style="text-align:left; color:#666;">પ્રશ્ન: 1 / 10</p>
-        <p id="question">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
+        <p id="question_num" style="text-align:left; color:#666; font-weight:bold; margin-bottom:0;">પ્રશ્ન: 1 / 10</p>
+        <p id="question">લોડ થઈ રહ્યું છે...</p>
         <div id="options"></div>
     </div>
-    <div id="result-box" style="display: none;">
+    <div id="result-box" style="display: none; text-align:center;">
         <h3>🎉 ક્વિઝ પૂરી થઈ ગઈ!</h3>
-        <p id="score-display" style="font-size:20px;"></p>
-        <button onclick="location.reload()" style="padding:10px 20px; font-size:16px; cursor:pointer;">ફરીથી શરૂ કરો</button>
+        <p id="score-display" style="font-size:22px; font-weight:bold; color:#2c3e50;"></p>
+        <button onclick="location.reload()" style="padding:12px 25px; font-size:16px; cursor:pointer; background:#3498db; color:white; border:none; border-radius:25px; font-weight:bold;">ફરીથી શરૂ કરો</button>
     </div>
 </div>
 
@@ -56,7 +57,7 @@
         if (currentQuestion >= quizData.length) {
             document.getElementById("quiz-box").style.display = "none";
             document.getElementById("result-box").style.display = "block";
-            document.getElementById("score-display").innerHTML = "તમારો સ્કોર: <b>" + score + " / " + quizData.length + "</b>";
+            document.getElementById("score-display").innerHTML = "તમારો સ્કોર: " + score + " / " + quizData.length;
             return;
         }
 
