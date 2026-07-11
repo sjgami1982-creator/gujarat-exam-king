@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>મારી ઓનલાઇન ક્વિઝ</title>
+    <title>ગુજરાત એક્ઝામ કિંગ ક્વિઝ</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; text-align: center; }
         .quiz-container { background: white; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        button { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 5px; background: #e7e7e7; }
+        button { display: block; width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 5px; background: #e7e7e7; text-align: left; padding-left: 20px; }
         button:hover { background: #ddd; }
         #result { margin-top: 20px; font-weight: bold; font-size: 18px; }
     </style>
@@ -15,26 +15,67 @@
 <body>
 
 <div class="quiz-container">
-    <h2>સામાન્ય જ્ઞાન ક્વિઝ</h2>
+    <h2>ગુજરાત જનરલ નોલેજ ક્વિઝ</h2>
     <div id="quiz">
-        <p id="question">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
+        <p id="question_num" style="font-weight: bold; color: #555;"></p>
+        <p id="question" style="font-size: 18px; font-weight: bold;">પ્રશ્ન લોડ થઈ રહ્યો છે...</p>
         <div id="options"></div>
     </div>
     <div id="result"></div>
 </div>
 
 <script>
-    // ૧. પ્રશ્નોની યાદી (અહીં તમે નવા પ્રશ્નો ઉમેરી શકો છો)
+    // અહીં કુલ ૧૦ પ્રશ્નો ઉમેરેલા છે. તમે સાચા જવાબનો નંબર (correct) 0, 1, 2, 3 મુજબ સેટ કરી શકો છો.
     const quizData = [
         {
-            question: "ગુજરાતનું પાટનગર કયું છે?",
-            options: ["અમદાવાદ", "સુરત", "ગાંધીનગર", "રાજકોટ"],
-            correct: 2 // ૨ એટલે કે 'ગાંધીનગર' (ગણતરી 0 થી શરૂ થાય: 0=અમદાવાદ, 1=સુરત, 2=ગાંધીનગર...)
+            question: "૧. ગુજરાતની સૌથી લાંબી નદી કઈ છે?",
+            options: ["તાપી", "નર્મદા", "મહી", "સાબરમતી"],
+            correct: 1 // નર્મદા
         },
         {
-            question: "કયો ગ્રહ 'લાલ ગ્રહ' તરીકે ઓળખાય છે?",
-            options: ["બુધ", "મંગળ", "શુક્ર", "શનિ"],
-            correct: 1 // 1 એટલે કે 'મંગળ'
+            question: "૨. સાબરમતી આશ્રમની સ્થાપના કયા વર્ષમાં થઈ હતી?",
+            options: ["૧૯૧૫", "૧૯૧૭", "૧૯૨૦", "૧૯૩૦"],
+            correct: 1 // ૧૯૧૭
+        },
+        {
+            question: "૩. ગુજરાતનું સૌથી મોટું બંદર કયું છે?",
+            options: ["ભાવનગર", "પોરબંદર", "કંડલા", "વેરાવળ"],
+            correct: 2 // કંડલા
+        },
+        {
+            question: "૪. સ્ટેચ્યુ ઓફ યુનિટીની ઊંચાઈ કેટલી છે?",
+            options: ["૧૫૨ મીટર", "૧૮૨ મીટર", "૨0૨ મીટર", "૧૭૨ મીટર"],
+            correct: 1 // ૧૮૨ મીટર
+        },
+        {
+            question: "૫. ગુજરાતનું રાજ્ય પક્ષી કયું છે?",
+            options: ["મોર", "પોપટ", "ફ્લેમિંગો (સુરખાબ)", "કબૂતર"],
+            correct: 2 // ફ્લેમિંગો
+        },
+        {
+            question: "૬. ગિરા ધોધ કયા જિલ્લામાં આવેલો છે?",
+            options: ["ડાંગ", "વલસાડ", "નવસારી", "તાપી"],
+            correct: 0 // ડાંગ
+        },
+        {
+            question: "૭. કીર્તિ તોરણ કયા શહેરમાં આવેલું છે?",
+            options: ["પાટણ", "વડનગર", "જૂનાગઢ", "મોઢેરા"],
+            correct: 1 // વડનગર
+        },
+        {
+            question: "૮. અક્ષરધામ મંદિર કયા શહેરમાં આવેલું છે?",
+            options: ["અમદાવાદ", "રાજકોટ", "ગાંધીનગર", "સુરત"],
+            correct: 2 // ગાંધીનગર
+        },
+        {
+            question: "૯. ગુજરાતમાં સૂર્યમંદિર ક્યાં આવેલું છે?",
+            options: ["મોઢેરા", "અંબાજી", "સોમનાથ", "દ્વારકા"],
+            correct: 0 // મોઢેરા
+        },
+        {
+            question: "૧૦. ગીર રાષ્ટ્રીય ઉદ્યાન કયા પ્રાણી માટે પ્રખ્યાત છે?",
+            options: ["વાઘ", "સિંહ", "દીપડો", "કાળિયાર"],
+            correct: 1 // સિંહ
         }
     ];
 
@@ -43,10 +84,11 @@
 
     function loadQuiz() {
         const currentQuiz = quizData[currentQuestion];
+        document.getElementById("question_num").innerText = `પ્રશ્ન: ${currentQuestion + 1} / ${quizData.length}`;
         document.getElementById("question").innerText = currentQuiz.question;
         
         const optionsContainer = document.getElementById("options");
-        optionsContainer.innerHTML = ""; // જૂના ઓપ્શન સાફ કરવા
+        optionsContainer.innerHTML = ""; 
 
         currentQuiz.options.forEach((option, index) => {
             const btn = document.createElement("button");
@@ -66,12 +108,11 @@
         if (currentQuestion < quizData.length) {
             loadQuiz();
         } else {
-            document.getElementById("quiz").innerHTML = "<h3>ક્વિઝ પૂરી થઈ ગઈ!</h3>";
-            document.getElementById("result").innerText = `તમારો સ્કોર: ${score} / ${quizData.length}`;
+            document.getElementById("quiz").innerHTML = "<h3>🎉 ક્વિઝ પૂરી થઈ ગઈ!</h3>";
+            document.getElementById("result").innerHTML = `તમારો ફાઇનલ સ્કોર: <strong>${score} / ${quizData.length}</strong>`;
         }
     }
 
-    // ક્વિઝ શરૂ કરો
     loadQuiz();
 </script>
 
